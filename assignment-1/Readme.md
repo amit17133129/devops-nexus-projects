@@ -8,8 +8,12 @@ Run below command to install respective providers and modules.
 ```
 ## Dry run:
    Run below command to see the dry changes before applying.
-    ```terraform plan```
+```
+    terraform plan
+```
 
 ## Dry run:
    Run below command to implement the changes in environment.
-    ```terraform apply --auto-approve```
+```
+    terraform apply --auto-approve
+```
