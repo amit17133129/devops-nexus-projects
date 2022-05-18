@@ -1,10 +1,10 @@
 ## Run below commands to launch the resources.
 ## terraform init: 
-    Run below command to install respective providers and modules.
+
+Run below command to install respective providers and modules.
 
 ```
     terraform init
-
 ```
 ## Dry run:
    Run below command to see the dry changes before applying.
