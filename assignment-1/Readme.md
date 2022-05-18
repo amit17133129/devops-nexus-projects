@@ -2,8 +2,10 @@
 ## terraform init: 
     Run below command to install res[ective providers and modules.
 
-    ```terraform init```
+```
+    terraform init
 
+```
 ## Dry run:
    Run below command to see the dry changes before applying.
     ```terraform plan```
