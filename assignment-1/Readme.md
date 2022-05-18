@@ -1,6 +1,6 @@
 ## Run below commands to launch the resources.
 ## terraform init: 
-    Run below command to install res[ective providers and modules.
+    Run below command to install respective providers and modules.
 
 ```
     terraform init
