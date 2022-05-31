@@ -1,65 +1,44 @@
-# AWS SG for webserver that allow HTTP 80 and SSH 22 port
-
-resource "aws_security_group" "sg_web" {
-  name        = "web"
-  description = "Allow default web server port"
-
-  egress {
-    description = "Allow all ip and ports outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+module "instance_sg" {
+  source              = "./modules/aws_security_group"
+  security_group_name = "webserver-sg"
+  vpc_id              = "vpc-8fc334e4"
+  ingress = [{
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "sg-Webserver"
-  }
+    from_port   = 80
+    protocol    = "tcp"
+    to_port     = 80
+    },
+    {
+      cidr_blocks = ["0.0.0.0/0"]
+      from_port   = 22
+      protocol    = "tcp"
+      to_port     = 22
+    },
+  ]
 }
 
-# security group rule for HTTP port
-resource "aws_security_group_rule" "http_rule" {
-  type              = "ingress"
-  from_port         = 80
-  to_port           = 80
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_web.id
-}
-
-# security group rule for HTTPS port
-resource "aws_security_group_rule" "secure_http_rule" {
-  type              = "ingress"
-  from_port         = 443
-  to_port           = 443
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_web.id
-}
-
-# AWS SG for webserver that allow HTTP 80 and SSH 22 port
-resource "aws_security_group" "sg_ssh" {
-  name        = "SSH"
-  description = "VPC SSH"
-
-  egress {
-    description = "Allow all ip and ports outbound"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+module "rds_sg" {
+  source = "./modules/aws_security_group"
+  security_group_name = "rds_mysql_sg"
+  vpc_id = "vpc-8fc334e4"
+  ingress = [{
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "sg-ssh"
-  }
+    from_port   = 3306
+    protocol    = "tcp"
+    to_port     = 3306
+    },
+  ]
 }
 
-resource "aws_security_group_rule" "ssh_rule" {
-  type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
-  cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = aws_security_group.sg_ssh.id
+module "sg_alb" {
+  source = "./modules/aws_security_group"
+  security_group_name = "alb"
+  vpc_id = "vpc-8fc334e4"
+  ingress = [{
+    cidr_blocks = ["0.0.0.0/0"]
+    from_port   = 80
+    protocol    = "tcp"
+    to_port     = 80
+    },
+  ]
 }
